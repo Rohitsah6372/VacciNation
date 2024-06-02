@@ -23,10 +23,13 @@ public class DoctorService {
     public Doctor getDoctor(int docId){
         Optional<Doctor> optionalDoctor = doctorRepository.findById(docId);
         if(optionalDoctor.isEmpty()){
-            throw  new DoctorNotFoundException();
+            throw  new DoctorNotFoundException("Invalid DoctorID");
         }
         return optionalDoctor.get();
 
     }
 
+    public void deleteDocotor(int id) {
+        doctorRepository.deleteById(id);
+    }
 }

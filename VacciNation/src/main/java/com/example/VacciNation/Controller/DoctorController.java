@@ -28,6 +28,13 @@ public class DoctorController {
         return doctorService.getDoctor(id);
     }
 
+    //delete a doctor
+    @DeleteMapping("/delete")
+    public String deleteDoctor(@RequestParam("id") int id){
+        doctorService.deleteDocotor(id);
+        return "Doctor Deleted";
+    }
+
 
 
 }
