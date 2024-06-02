@@ -25,6 +25,8 @@ public class Patient {
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
 
+    private Boolean vaccinated;
+
     @Column(unique = true, nullable = false)
     private String emailId;
 

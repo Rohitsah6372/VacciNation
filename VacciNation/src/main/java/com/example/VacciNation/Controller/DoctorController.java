@@ -2,6 +2,7 @@ package com.example.VacciNation.Controller;
 
 import com.example.VacciNation.Model.Doctor;
 import com.example.VacciNation.Service.DoctorService;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,11 @@ public class DoctorController {
         }catch (Exception e){
             return "Error in Doctor";
         }
+    }
+
+    @GetMapping("/getDoctor")
+    private Doctor getDoctor(@RequestParam("id") int id){
+        return doctorService.getDoctor(id);
     }
 
 
