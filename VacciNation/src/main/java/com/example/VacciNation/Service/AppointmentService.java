@@ -1,5 +1,7 @@
 package com.example.VacciNation.Service;
 
+import com.example.VacciNation.DTOs.response.AppointmentResponse;
+import com.example.VacciNation.DTOs.response.PatientResponse;
 import com.example.VacciNation.Enum.AppointmentStatus;
 import com.example.VacciNation.Exception.DoctorNotFoundException;
 import com.example.VacciNation.Exception.PatientNotFoundException;
@@ -30,7 +32,7 @@ public class AppointmentService {
     DoctorRepository doctorRepository;
 
 
-    public Appointment bookAppointment(int pid, int did) {
+    public AppointmentResponse bookAppointment(int pid, int did) {
 
        Optional<Patient> patientOptional = patientRepository.findById(pid);
         if(patientOptional.isEmpty()){
@@ -45,7 +47,6 @@ public class AppointmentService {
         Patient patient = patientOptional.get();
         Doctor doctor = optionalDoctor.get();
 
-
         //Book the Appointment
         Appointment appointment = new Appointment();
 
@@ -57,8 +58,29 @@ public class AppointmentService {
         appointment.setPatient(patient);
 
 
+        Appointment savedAppointment = appointmentRepository.save(appointment);
 
-        return appointmentRepository.save(appointment);
+
+        //Model to DTOs
+
+        AppointmentResponse appointmentResponse = new AppointmentResponse();
+        appointmentResponse.setAppointmentId(savedAppointment.getAppointmentId());
+        appointmentResponse.setStatus(savedAppointment.getStatus());
+        appointmentResponse.setDoctorName(savedAppointment.getDoctor().getName());
+
+        Patient savedPatient = savedAppointment.getPatient();
+        PatientResponse patientResponse = new PatientResponse();
+        patientResponse.setName(savedPatient.getName());
+        patientResponse.setEmailId(savedPatient.getEmailId());
+        patientResponse.setVaccinated(savedPatient.getVaccinated());
+
+        appointmentResponse.setPatientResponse(patientResponse);
+
+
+
+
+
+        return appointmentResponse;
 
     }
 }

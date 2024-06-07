@@ -1,5 +1,7 @@
 package com.example.VacciNation.Controller;
 
+import com.example.VacciNation.DTOs.request.PatientRequest;
+import com.example.VacciNation.DTOs.response.PatientResponse;
 import com.example.VacciNation.Model.Patient;
 import com.example.VacciNation.Service.PatientService;
 import lombok.Getter;
@@ -18,19 +20,20 @@ public class PatientController {
         PatientService patientService;
 
         @PostMapping("/add")
-        private ResponseEntity addPatient(@RequestBody Patient patient){
-            try{
-                    patientService.addPatient(patient);
-                    return new ResponseEntity("Patient has been added", HttpStatus.CREATED);
-            }catch (Exception e){
-                    return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
-
-            }
+        private ResponseEntity<PatientResponse> addPatient(@RequestBody PatientRequest patientRequest) {
+                try {
+                        PatientResponse patientResponse = patientService.addPatient(patientRequest);
+                        return new ResponseEntity<>(patientResponse, HttpStatus.CREATED);
+                } catch (Exception e) {
+                        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+                }
         }
 
+
         @GetMapping("/getPatient")
-        private Patient getPatient(@RequestParam("id") int id){
-                return patientService.getPatient(id);
+        private PatientResponse getPatient(@RequestParam("id") int id){
+                PatientResponse patientResponse = patientService.getPatient(id);
+                return patientResponse;
         }
 
 }

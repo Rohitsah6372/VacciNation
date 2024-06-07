@@ -1,5 +1,6 @@
 package com.example.VacciNation.Controller;
 
+import com.example.VacciNation.DTOs.response.AppointmentResponse;
 import com.example.VacciNation.Model.Appointment;
 import com.example.VacciNation.Model.Patient;
 import com.example.VacciNation.Service.AppointmentService;
@@ -16,12 +17,12 @@ public class AppointmentController {
     AppointmentService appointmentService;
 
     @PostMapping("/book")
-    private ResponseEntity bookAppointment(@RequestParam("pid") int patientId,
-                                           @RequestParam("did") int doctor_id){
+    private ResponseEntity<AppointmentResponse> bookAppointment(@RequestParam("pid") int patientId,
+                                                                @RequestParam("did") int doctor_id){
         try{
-            Appointment bookAppointment  =   appointmentService.bookAppointment(patientId, doctor_id);
+            AppointmentResponse appointmentResponse  =   appointmentService.bookAppointment(patientId, doctor_id);
 
-            return new ResponseEntity(bookAppointment, HttpStatus.CREATED);
+            return new ResponseEntity<>(appointmentResponse, HttpStatus.CREATED);
 
         }catch(Exception e){
             return new ResponseEntity(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
